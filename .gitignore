@@ -1,0 +1,26 @@
+# --- Go (backend) ---
+# Binário compilado (gerado por 'go build')
+/backend/kanban
+/backend/main
+*.exe
+
+# --- Node / React (frontend) ---
+# Dependências instaladas via npm (recriadas com 'npm install')
+/frontend/node_modules
+
+# Build de produção (gerado por 'npm run build')
+/frontend/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Editor / SO ---
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- Variáveis de ambiente (se vier a usar) ---
+.env
+.env.local
