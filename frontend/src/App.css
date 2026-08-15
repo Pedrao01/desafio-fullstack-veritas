@@ -260,7 +260,7 @@
   min-width: 300px;
 }
 
-.form-error {
+.error {
   color: #ef4444;          
   font-size: 14px;         
   margin: 8px auto;

@@ -18,7 +18,7 @@ function Column({title, status, tasks, onDelete, onMove, onEdit}: ColumnProps) {
             <h2>{title}</h2>
             {filteredTasks.map(task => (
                 <div className="task" key={task.id}>
-                    <TaskCard id={task.id} title={task.title} status={task.status} description={task.description} />
+                    <TaskCard title={task.title} status={task.status} description={task.description} />
                     <select
                         value={task.status}
                         onChange={(e) => onMove(task.id, e.target.value as Task["status"])}

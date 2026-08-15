@@ -18,6 +18,9 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+  const [errorUpdateTask, setErrorUpdateTask] = useState<string | null>(null)
+  const [erroSaveTask, setErrorSaveTask] = useState<string | null>(null)
+  const [errorDeleteTask, setErrorDeleteTask] = useState<string | null>(null)
 
   useEffect(() => {
     getTasks()
@@ -28,20 +31,32 @@ function App() {
   }, [])
 
   const handleDeleteTask = async(id: string) => {
-    const deleted = await deleteTask(id)
-    const t = tasks.filter(t => t.id !== deleted.id)
-    setTasks(t)
+    setErrorDeleteTask(null)
+    try {
+      const deleted = await deleteTask(id)
+      const t = tasks.filter(t => t.id !== deleted.id)
+      setTasks(t)
+    } catch (err) {
+      setErrorDeleteTask("Erro ao deletar Task")
+    }
   }
   
   const handleUpdateTask = async(id: string, status: "todo" | "in_progress" | "done") => {
-    const updatedTask = await updateTask(id, status)
-    const t = tasks.map(task => {
-      if (task.id === updatedTask.id) {
-        return updatedTask
-      }
-      return task
-    })
-    setTasks(t)
+    setErrorUpdateTask(null)
+
+    try {
+      const updatedTask = await updateTask(id, status)
+      const t = tasks.map(task => {
+        if (task.id === updatedTask.id) {
+          return updatedTask
+        }
+        return task
+      })
+      setTasks(t)
+    } catch (err) {
+      setErrorUpdateTask("Erro ao tentar atualizar a tarefa")
+    }
+    
   }
 
   const handleSubmit = async(e: React.FormEvent) => {
@@ -66,16 +81,22 @@ function App() {
   }
 
   const handleSaveTask = async() => {
-    if (!editingTask) return;
-    const updatedTask = await updateTask(editingTask.id, editStatus, editTitle, editDescription)
-    const ts = tasks.map((tasks) => {
-      if (tasks.id === updatedTask.id) {
-        return updatedTask;
-      }
-      return tasks
-    })
-    setTasks(ts)
-    setEditionTask(null)
+    setErrorSaveTask(null)
+
+    try {
+      if (!editingTask) return;
+      const updatedTask = await updateTask(editingTask.id, editStatus, editTitle, editDescription)
+      const ts = tasks.map((tasks) => {
+        if (tasks.id === updatedTask.id) {
+          return updatedTask;
+        }
+        return tasks
+      })
+      setTasks(ts)
+      setEditionTask(null)
+    } catch (err) {
+      setErrorSaveTask("Erro ao tenatar Salvar a tarefa")
+    }
   }
   
   if (loading) return <p>Carregando tarefas...</p>
@@ -83,6 +104,10 @@ function App() {
   return (
     <div className='formulario-container'>
       <div className='app-container'>
+        {(errorUpdateTask || errorDeleteTask) && (
+          <p className='error'>{errorUpdateTask || errorDeleteTask}</p>
+        )}
+
       <div className='board'>
         <Column title="A Fazer" status="todo" tasks={tasks} onDelete={handleDeleteTask} onMove={handleUpdateTask} onEdit={handleEditTask}/>
         <Column title='Em progresso' status='in_progress' tasks={tasks} onDelete={handleDeleteTask} onMove={handleUpdateTask} onEdit={handleEditTask}/>
@@ -108,7 +133,7 @@ function App() {
           />
         </div>
 
-        {formError && <p className='form-error'>{formError}</p>}
+        {formError && <p className='error'>{formError}</p>}
 
         <div className='button'>
           <button type='submit'>Adicionar</button>
@@ -119,6 +144,7 @@ function App() {
         <div className="modal-overlay">
           <div className='modal'>
             <h2>Editar Tarefa</h2>
+            {erroSaveTask && <p className='error'>{erroSaveTask}</p>}
             <div>
               <input
               type='text'

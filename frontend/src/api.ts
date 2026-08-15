@@ -27,6 +27,10 @@ export const deleteTask = async ( id: string): Promise<Task> => {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
     })
+    
+    if (!r.ok) {
+        throw new Error("Erro ao tenatar deletar a tarefa")
+    }
 
     return r.json()
 }
@@ -37,6 +41,10 @@ export const updateTask = async (id: string, status?: string, title?: string, de
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({title, description, status})
     })
+
+    if (!r.ok) {
+        throw new Error("Erro ao tentar atualizar a tarefa")
+    }
 
     return r.json()
 }
