@@ -20,7 +20,7 @@ Aplicação fullstack de Kanban com três colunas fixas (A Fazer, Em Progresso, 
     types.ts
 /docs
   user-flow.png
-  README.md
+README.md
 .gitignore
 ```
 
