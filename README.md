@@ -87,3 +87,4 @@ A aplicação sobe em `http://localhost:5173` e já está configurada para consu
 - Testes automatizados no backend (handlers) e no frontend (componentes).
 - Autenticação básica, caso o Kanban precise ser multiusuário.
 - Containerização com Docker para facilitar o setup do avaliador.
+- Melhorar o tratamento de erro.
